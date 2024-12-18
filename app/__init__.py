@@ -1,6 +1,6 @@
 from flask import Flask
-from database import db, init_app
-from routes import app
+from app.database import db, init_app
+from app.routes import app
 
 def create_app():
     routes = Flask (__name__)
