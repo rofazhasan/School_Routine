@@ -275,13 +275,12 @@ def user_dashboard():
         start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=dhaka_timezone)
         end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone) 
 
-        if start_time <= now_dhaka <= end_time:
+        # Check if the class is TODAY and within the current time
+        if schedule.day_of_week == now_dhaka.strftime('%A') and start_time <= now_dhaka <= end_time: 
             current_class = schedule
             remaining_time = end_time - now_dhaka
             remaining_time = str(timedelta(seconds=remaining_time.seconds))  # Format remaining time
 
-        # Check if the class is today
-        if schedule.day_of_week == now_dhaka.strftime('%A'):
             class_ = Class.query.get(schedule.class_id)
             subject = Subject.query.get(schedule.subject_id)
             todays_classes.append({
