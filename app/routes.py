@@ -86,12 +86,13 @@ def show_routine():
 
     if user_role == 'Admin':
         # Admin view: Show all schedules
-        schedules = TeacherSchedule.query.all()
+        schedules = TeacherSchedule.query
     else:
         # User view: Show only their schedules
         schedules = TeacherSchedule.query.filter_by(teacher_id=user_id)
         if selected_day:
             schedules = schedules.filter_by(day_of_week=selected_day)
+        schedules = schedules.all()
 
     # Prepare data for the template
     routine_data = []
