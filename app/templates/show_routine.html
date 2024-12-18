@@ -120,16 +120,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in routine_data %}
-                <tr>
-                    <td>{{ item.teacher }}</td>
-                    <td>{{ item.class }}</td>
-                    <td>{{ item.subject }}</td>
-                    <td>{{ item.day }}</td>
-                    <td>{{ item.start_time }}</td>
-                    <td>{{ item.end_time }}</td>
-                </tr>
-                {% endfor %}
+                {% if routine_data %}
+          {% for item in routine_data %}
+          <tr>
+            <td>{{ item.teacher }}</td>
+            <td>{{ item.class }}</td>
+            <td>{{ item.subject }}</td>
+            <td>{{ item.day }}</td>
+            <td>{{ item.start_time }}</td>
+            <td>{{ item.end_time }}</td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="6" style="text-align: center;">No classes found</td> 
+          </tr>
+        {% endif %}
             </tbody>
         </table>
     </div>
