@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #d9e4f5);
+            color: #444;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s ease, color 0.5s ease; /* Add transition for smooth color change */
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #eee;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 280px;
+            background: linear-gradient(135deg,#602420, #182848);
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            z-index: 100;
+        }
+
+        /* Hide sidebar by default on smaller screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar:hover {
+            transform: translateX(10px);
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .content {
+            margin-left: 280px;
+            padding: 20px; /* Reduced padding */
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* Adjust content margin for smaller screens */
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+        }
+
+        .navbar {
+            background: linear-gradient(to right, red, #ff9068);
+            padding: 15px 20px; /* Reduced padding */
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .app-name { /* Added for app name and hamburger */
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .app-name span {
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-right: 10px;
+        }
+
+        .navbar .welcome-message { /* Added for welcome message */
+            font-size: 1.2rem; /* Slightly smaller font size */
+            word-break: break-word; /* Allow wrapping */
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px; /* Added spacing between cards */
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h5 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+        }
+
+        .datetime-display {
+            font-size: 1.2rem;
+            font-weight: 500;
+            background: white;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .btn {
+            margin-top: 1rem;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+
+        .running-text {
+            background-color: #ffe6e9;
+            color: #ff5c8d;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .running-text span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 23s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #182848, #4b6cb7);
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        footer span {
+            font-weight: bold;
+        }
+
+        .hamburger {
+            display: none;
+            position: relative; /* Changed to relative for flexbox alignment */
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+        }
+
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: white;
+        }
+
+        .dark-mode-toggle { /* Added for dark mode toggle */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 101;
+            cursor: pointer;
+            color: white; /* Default color */
+        }
+
+        .dark-mode .dark-mode-toggle {
+            color: black; /* Color in dark mode */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h3>User Dashboard</h3>
+        <a href="/show_routine">View Routine</a>
+        <a href="/admin/news">News</a>
+        <a href="/change_password">Change Password</a>
+        <a href="{{ url_for('app.logout') }}">Log out</a>
+    </div>
+
+    <div class="content">
+        <nav class="navbar">
+            <div class="app-name">
+                <span></span>
+            </div>
+            <div class="welcome-message">Welcome, {{ name }} ({{ designation }})</div>
+            <div id="current-datetime" class="datetime-display"></div>
+        </nav>
+<div class="running-text">
+            <a href="#" onclick="showAllNews()">
+                <span>
+                    {% if latest_news %}
+                        {{ latest_news.content }}
+                    {% else %}
+                        No news available.
+                    {% endif %}
+                </span>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center p-4">
+                    <h5>Today's Classes</h5>
+                    <p>
+                        {% if todays_classes == "No classes today" %}
+                            {{ todays_classes }}
+                        {% else %}
+                            <ul>
+                            {% for class_ in todays_classes %}
+                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }})
+                                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center p-4">
+                    <h5>Current Class</h5>
+                    {% if current_class %}
+                        <p>{{ current_class.classroom.class_name }} - {{ current_class.subject.subject_name }} ({{ current_class.classroom.section }})</p>
+                        <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
+                    {% else %}
+                        <p>No class in session</p>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+<div id="all-news-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeAllNewsModal()">&times;</span>
+                <h2>All News</h2>
+                <ul>
+                    {% for news_item in all_news %}
+                        <li>
+                            <h3>{{ news_item.title }}</h3>
+                            <p>{{ news_item.content }}</p>
+                            <p>Created at: {{ news_item.created_at }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <footer>
+            <p>Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span></p>
+        </footer>
+    </div>
+
+  <script>
+    function updateDateTime() {
+      const dhakaTimezone = 'Asia/Dhaka';
+      const now = new Date();
+      const options = {
+        timeZone: dhakaTimezone,
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+      const timeString = now.toLocaleString('en-US', options);
+
+      const dateOptions = {
+        timeZone: dhakaTimezone,
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      };
+      const dateString = now.toLocaleString('en-US', dateOptions);
+
+      document.getElementById('current-datetime').innerHTML = `
+          <div>Date: ${dateString}</div>
+          <div>Time: ${timeString}</div>
+      `;
+    }
+
+    setInterval(updateDateTime, 1000);
+    function updateRemainingTime() {
+            var remainingTimeElement = document.getElementById("remaining-time");
+            if (remainingTimeElement) {
+                var timeParts = remainingTimeElement.textContent.split(":");
+                var hours = parseInt(timeParts[0]);
+                var minutes = parseInt(timeParts[1]);
+                var seconds = parseInt(timeParts[2]);
+
+                if (seconds > 0) {
+                    seconds--;
+                } else {
+                    if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        if (hours > 0) {
+                            hours--;
+                            minutes = 59;
+                            seconds = 59;
+                        } else {
+                            // Time's up! You might want to refresh the page or update the current class info
+                            remainingTimeElement.textContent = "Class ended";
+                            return;
+                        }
+                    }
+                }
+
+                var newTimeString = hours.toString().padStart(2, '0') + ":" +
+                                    minutes.toString().padStart(2, '0') + ":" +
+                                    seconds.toString().padStart(2, '0');
+                remainingTimeElement.textContent = newTimeString;
+            }
+        }
+
+        // Update remaining time every second
+        setInterval(updateRemainingTime, 1000);
+    function showAllNews() {
+            document.getElementById("all-news-modal").style.display = "block";
+        }
+
+        function closeAllNewsModal() {
+            document.getElementById("all-news-modal").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
