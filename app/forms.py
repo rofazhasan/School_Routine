@@ -3,7 +3,7 @@ from wtforms import StringField, TextAreaField, SubmitField
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, FloatField, SubmitField, DateField, IntegerField, HiddenField,SelectField,TimeField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange
-from models import User
+from app.models import User
 
 class LoginForm(FlaskForm):
     phone_number = StringField(
