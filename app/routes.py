@@ -118,14 +118,14 @@ def admin_dashboard():
     num_of_users = User.query.count()
 
     # Get Dhaka time
-    dhaka_timezone = 'Asia/Dhaka'
-    now_dhaka = datetime.now(pytz.timezone(dhaka_timezone))
+    dhaka_timezone = pytz.timezone("Asia/Dhaka")
+    now_dhaka = datetime.now(dhaka_timezone)
 
     # Get all currently running classes
     running_classes = []
     for schedule in TeacherSchedule.query.all():
-        start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=timezone(dhaka_timezone))
-        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=timezone(dhaka_timezone))
+        start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=dhaka_timezone)
+        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone) 
         if start_time <= now_dhaka <= end_time:
             teacher = User.query.get(schedule.teacher_id)
             class_ = Class.query.get(schedule.class_id)
@@ -260,8 +260,8 @@ def user_dashboard():
     latest_news = News.query.order_by(News.news_id.desc()).first()
 
     # Get Dhaka time
-    dhaka_timezone = 'Asia/Dhaka'
-    now_dhaka = datetime.now(pytz.timezone(dhaka_timezone))
+    dhaka_timezone = pytz.timezone("Asia/Dhaka")
+    now_dhaka = datetime.now(dhaka_timezone)
 
     # Get today's schedule for the logged-in teacher
     todays_schedule = TeacherSchedule.query.filter_by(teacher_id=user.user_id).all()
@@ -271,8 +271,8 @@ def user_dashboard():
     current_class = None
     remaining_time = None
     for schedule in todays_schedule:
-        start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=timezone(dhaka_timezone))
-        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=timezone(dhaka_timezone))
+        start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=dhaka_timezone)
+        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone) 
 
         if start_time <= now_dhaka <= end_time:
             current_class = schedule
