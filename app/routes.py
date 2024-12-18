@@ -126,8 +126,10 @@ def admin_dashboard():
     running_classes = []
     for schedule in TeacherSchedule.query.all():
         start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=dhaka_timezone)
-        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone) 
-        if start_time <= now_dhaka <= end_time:
+        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone)
+
+    # Check if the class is TODAY and within the current time
+        if schedule.day_of_week == now_dhaka.strftime('%A') and start_time <= now_dhaka <= end_time: 
             teacher = User.query.get(schedule.teacher_id)
             class_ = Class.query.get(schedule.class_id)
             subject = Subject.query.get(schedule.subject_id)
@@ -137,7 +139,6 @@ def admin_dashboard():
                 'subject': subject.subject_name,
                 'section': class_.section
             })
-
     # Get today's classes
     todays_classes = []
     for schedule in TeacherSchedule.query.all():
@@ -273,23 +274,21 @@ def user_dashboard():
     remaining_time = None
     for schedule in todays_schedule:
         start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=dhaka_timezone)
-        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone) 
+        end_time = datetime.combine(now_dhaka.date(), schedule.end_time).replace(tzinfo=dhaka_timezone)
 
         # Check if the class is TODAY and within the current time
-        if schedule.day_of_week == now_dhaka.strftime('%A') and start_time <= now_dhaka <= end_time: 
-            current_class = schedule
+        if schedule.day_of_week == now_dhaka.strftime('%A') and start_time <= now_dhaka <= end_time:
+            current_class = {  # Store current class details in a dictionary
+                'class': Class.query.get(schedule.class_id).class_name,
+                'subject': Subject.query.get(schedule.subject_id).subject_name,
+                'section': Class.query.get(schedule.class_id).section,
+                'start_time': schedule.start_time.strftime('%I:%M %p'),
+                'end_time': schedule.end_time.strftime('%I:%M %p')
+            }
             remaining_time = end_time - now_dhaka
             remaining_time = str(timedelta(seconds=remaining_time.seconds))  # Format remaining time
 
-            class_ = Class.query.get(schedule.class_id)
-            subject = Subject.query.get(schedule.subject_id)
-            todays_classes.append({
-                'class': class_.class_name,
-                'subject': subject.subject_name,
-                'section': class_.section,
-                'start_time': schedule.start_time.strftime('%I:%M %p'),
-                'end_time': schedule.end_time.strftime('%I:%M %p')
-            })
+            todays_classes.append(current_class)  # Add current class to today's classes
 
     if not todays_classes:
         todays_classes = "No classes today"
@@ -299,7 +298,7 @@ def user_dashboard():
         name=user.name,
         designation=user.role,
         todays_classes=todays_classes,
-        current_class=current_class,
+        current_class=current_class,  # Pass the current_class dictionary
         remaining_time=remaining_time,
         latest_news=latest_news
     )
