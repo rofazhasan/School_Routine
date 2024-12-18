@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for, session
-from models import User,Class ,Subject,TeacherSchedule,News
-from forms import LoginForm, AddUserForm,NewsForm,ChangePasswordForm,TeacherScheduleForm
-from database import db
+from app.models import User,Class ,Subject,TeacherSchedule,News
+from app.forms import LoginForm, AddUserForm,NewsForm,ChangePasswordForm,TeacherScheduleForm
+from app.database import db
 from datetime import datetime, time, timedelta,timezone
 import pytz
 
