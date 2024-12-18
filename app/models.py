@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from database import db
+from app.database import db
 from datetime import datetime
 
 # Users Table
