@@ -15,35 +15,36 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 10px; /* Reduced padding for smaller screens */
             margin: 0;
         }
 
         .container {
             background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
+            padding: 1rem; /* Reduced padding for smaller screens */
             border-radius: 12px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 900px;
+            overflow-x: auto; /* Added for horizontal scrolling */
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 1.8rem; /* Slightly smaller font size */
             font-weight: bold;
             color: #6a11cb;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             text-align: center;
         }
 
         table {
             width: 100%;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             border-collapse: collapse;
         }
 
         table th, table td {
-            padding: 10px;
+            padding: 8px; /* Reduced padding */
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -51,6 +52,7 @@
         table th {
             background: #6a11cb;
             color: #fff;
+            white-space: nowrap; /* Prevent header cells from wrapping */
         }
 
         table tbody tr:nth-child(even) {
@@ -82,9 +84,27 @@
             margin-right: 10px;
         }
 
+        /* Media query for smaller screens */
         @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem; 
+            }
+
             table {
-                font-size: 0.9rem;
+                font-size: 0.8rem; 
+            }
+
+            .form-select {
+                width: 100%; /* Make select element take full width */
+                margin-bottom: 10px; 
+            }
+
+            .d-flex.align-items-center.justify-content-center {
+                flex-direction: column; /* Stack form elements vertically */
+            }
+
+            .btn-primary {
+                width: 100%; /* Make button take full width */
             }
         }
     </style>
@@ -121,21 +141,21 @@
             </thead>
             <tbody>
                 {% if routine_data %}
-          {% for item in routine_data %}
-          <tr>
-            <td>{{ item.teacher }}</td>
-            <td>{{ item.class }}</td>
-            <td>{{ item.subject }}</td>
-            <td>{{ item.day }}</td>
-            <td>{{ item.start_time }}</td>
-            <td>{{ item.end_time }}</td>
-          </tr>
-          {% endfor %}
-        {% else %}
-          <tr>
-            <td colspan="6" style="text-align: center;">No classes found</td> 
-          </tr>
-        {% endif %}
+                {% for item in routine_data %}
+                <tr>
+                    <td>{{ item.teacher }}</td>
+                    <td>{{ item.class }}</td>
+                    <td>{{ item.subject }}</td>
+                    <td>{{ item.day }}</td>
+                    <td>{{ item.start_time }}</td>
+                    <td>{{ item.end_time }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center;">No classes found</td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
