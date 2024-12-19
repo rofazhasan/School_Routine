@@ -297,11 +297,12 @@
                 <div class="card text-center p-4">
                     <h5>Current Class</h5>
                     {% if current_class %}
-                        <p>{{ current_class.classroom.class_name }} - {{ current_class.subject.subject_name }} ({{ current_class.classroom.section }})</p>
-                        <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
-                    {% else %}
-                        <p>No class in session</p>
-                    {% endif %}
+    <p>{{ current_class.class }} - {{ current_class.subject }} ({{ current_class.section }})</p> 
+    <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
+{% else %}
+    <p>No class in session</p>
+{% endif %}
+
                 </div>
             </div>
             </div>
