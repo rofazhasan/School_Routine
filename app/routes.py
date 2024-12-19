@@ -117,6 +117,8 @@ def admin_dashboard():
 
     user = User.query.filter_by(user_id=session.get('user_id')).first()
     num_of_users = User.query.count()
+    if user.phone=='01712521742':
+        designation = 'Head Master'
 
     # Get Dhaka time
     dhaka_timezone = pytz.timezone("Asia/Dhaka")
@@ -174,7 +176,7 @@ def admin_dashboard():
         num_of_teachers=num_of_teachers,
         running_classes=running_classes,
         todays_classes=todays_classes,
-        all_news=all_news
+        all_news=all_news,designation = designation else 'Admin'
     )
 
 
