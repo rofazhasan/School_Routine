@@ -87,6 +87,9 @@ def show_routine():
     if user_role == 'Admin':
         # Admin view: Show all schedules
         schedules = TeacherSchedule.query
+        if selected_day:
+            schedules = schedules.filter_by(day_of_week=selected_day)
+        schedules = schedules.all()
     else:
         # User view: Show only their schedules
         schedules = TeacherSchedule.query.filter_by(teacher_id=user_id)
