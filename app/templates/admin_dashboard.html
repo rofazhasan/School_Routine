@@ -330,6 +330,10 @@
     </div>
 
     <script>
+        function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('show'); 
+}
         function updateDateTime() {
             const dhakaTimezone = 'Asia/Dhaka';
             const now = new Date();
