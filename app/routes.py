@@ -288,7 +288,8 @@ def user_dashboard():
             	'start_time': schedule.start_time.strftime('%I:%M %p'),
             	'end_time': schedule.end_time.strftime('%I:%M %p')
         		}
-        todays_classes.append(class_info)
+        
+        	todays_classes.append(class_info)
 
         # Check if this is the current class
         if start_time <= now_dhaka <= end_time:
