@@ -34,15 +34,21 @@
             z-index: 100;
         }
 
-        /* Hide sidebar by default on smaller screens */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-280px);
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-        }
+       @media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-280px); /* Hide on small screens */
+    }
+    .sidebar.show {
+        transform: translateX(0);    /* Show when 'show' class is present */
+    }
+}
+
+/* Add this to show the sidebar initially on larger screens */
+@media (min-width: 769px) { 
+    .sidebar {
+        transform: translateX(0);     /* Show on larger screens */
+    }
+}
 
         .sidebar:hover {
             transform: translateX(10px);
