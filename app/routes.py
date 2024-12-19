@@ -281,13 +281,13 @@ def user_dashboard():
 
         # Check if the class is TODAY and within the current time
         if schedule.day_of_week == now_dhaka.strftime('%A'): 
-        class_info = {
-            'class': Class.query.get(schedule.class_id).class_name,
-            'subject': Subject.query.get(schedule.subject_id).subject_name,
-            'section': Class.query.get(schedule.class_id).section,
-            'start_time': schedule.start_time.strftime('%I:%M %p'),
-            'end_time': schedule.end_time.strftime('%I:%M %p')
-        }
+        	class_info = {
+            	'class': Class.query.get(schedule.class_id).class_name,
+            	'subject': Subject.query.get(schedule.subject_id).subject_name,
+            	'section': Class.query.get(schedule.class_id).section,
+            	'start_time': schedule.start_time.strftime('%I:%M %p'),
+            	'end_time': schedule.end_time.strftime('%I:%M %p')
+        		}
         todays_classes.append(class_info)
 
         # Check if this is the current class
