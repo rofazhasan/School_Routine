@@ -298,36 +298,37 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="card p-4">
-                    <h5>Now Running All Classes</h5>
-                    {% if running_classes == "No classes running now" %}
-                        <p>{{ running_classes }}</p>
-                    {% else %}
-                        <ul>
-                        {% for class_ in running_classes %}
-                            <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-4">
-                    <h5>Today All Classes</h5>
-                    {% if todays_classes == "No classes today" %}
-                        <p>{{ todays_classes }}</p>
-                    {% else %}
-                        <ul>
-                        {% for class_ in todays_classes %}
-                            <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}
-                            <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            </div>
-            </div>
+    <div class="col-md-4">
+        <div class="card p-4">
+            <h5>Now Running All Classes</h5>
+            {% if running_classes == "No classes running now" %}
+                <p>{{ running_classes }}</p>
+            {% else %}
+                <ul>
+                {% for class_ in running_classes %}
+                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4">
+            <h5>Today All Classes</h5>
+            {% if todays_classes == "No classes today" %}
+                <p>{{ todays_classes }}</p>
+            {% else %}
+                <ul>
+                {% for class_ in todays_classes %}
+                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}
+                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
         </div>
 
     <footer>
