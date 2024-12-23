@@ -190,7 +190,7 @@ def create_routine():
     form = TeacherScheduleForm()
 
     # Populate form choices dynamically
-    Form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
+    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
                             User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()] 
 
     form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
