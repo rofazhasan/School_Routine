@@ -254,7 +254,7 @@ def news():
 
     # Fetch all news items (you might want to paginate this later)
     all_news = News.query.all()
-    return render_template('news.html', form=form, all_news=all_news)
+    return render_template('news.html', form=form, all_news=all_news,user_role=session.get('user_role'))
 
 
 @app.route('/user_dashboard')
