@@ -236,22 +236,59 @@ def add_user():
             flash(f"Error adding user: {e}", "danger")
     return render_template('add_user.html',form=form)
 
-@app.route('/admin/news', methods=["GET", "POST"])
+@app.route('/news', methods=['GET', 'POST'])
 def news():
     if not (session.get('logged_in') and session.get('user_role')):
         return redirect(url_for('app.login'))
 
     form = NewsForm()
     if form.validate_on_submit():
+        # Process links, bolding, and anchors in the content
+        content_with_html = process_content(form.content.data)
+
         news_item = News(
             title=form.title.data,
-            content=form.content.data,
-            created_by=session.get('user_id')  # Get the logged-in admin's ID
+            content=content_with_html, 
+            created_by=session.get('user_id')
         )
         db.session.add(news_item)
         db.session.commit()
         flash('News created successfully!', 'success')
-        return redirect(url_for('app.news'))  # Redirect to the news page
+        return redirect(url_for('app.news'))
+
+    show_all = request.args.get('show_all', False) 
+
+    if show_all:
+        all_news = News.query.all()
+    else:
+        today = datetime.utcnow().date()
+        all_news = News.query.filter(db.func.date(News.created_at) == today).all()
+
+    return render_template('news.html', form=form, all_news=all_news, user_role=session.get('user_role'))
+
+@app.route('/delete_news/<int:news_id>', methods=['POST']) 
+def delete_news(news_id):
+    if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
+        return redirect(url_for('app.login'))  # Or another appropriate response
+
+    news_item = News.query.get_or_404(news_id)
+    db.session.delete(news_item)
+    db.session.commit()
+    flash('News item deleted!', 'success')
+    return redirect(url_for('app.news'))
+
+def process_content(content):
+    # Find and replace links with <a> tags
+    content = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank">\1</a>', content)
+
+    # Find and replace bold text with <strong> tags
+    content = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', content)
+
+    # Find and replace anchors with <a> tags (e.g., [Link Text](#anchor))
+    content = re.sub(r'\[(.+?)\]\((#.+?)\)', r'<a href="\2">\1</a>', content)
+
+    return content
+
 
     # Fetch all news items (you might want to paginate this later)
     all_news = News.query.all()
