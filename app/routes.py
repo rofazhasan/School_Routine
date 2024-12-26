@@ -166,7 +166,7 @@ def admin_dashboard():
         running_classes = "No classes running now"
 
     # Get number of teachers
-    num_of_teachers = User.query.filter(User.role.in_(['Assistant Teacher', 'Assistant Head Teacher'])).count()
+    num_of_teachers = User.query.filter(User.role.in_(['Admin','Assistant Teacher', 'Assistant Head Teacher'])).count()
 
     # Get all news
     all_news = News.query.all()
