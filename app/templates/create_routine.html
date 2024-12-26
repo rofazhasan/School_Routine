@@ -146,8 +146,13 @@
                 {% endfor %}
             </div>
             <div>
-                {{ form.day_of_week.label }}
-                {{ form.day_of_week(multiple=True) }} <div>
+    {{ form.day_of_week.label }}
+    {{ form.day_of_week(multiple=True) }} 
+    {% for error in form.day_of_week.errors %}
+        <span class="error-message">{{ error }}</span>
+    {% endfor %}
+</div>
+            <div>
                     {{ form.start_time.label }}
                     {{ form.start_time }}
                     {% for error in form.start_time.errors %}
