@@ -110,7 +110,7 @@ def show_routine():
             'subject': subject.subject_name,
             'day': schedule.day_of_week,
             'start_time': schedule.start_time.strftime('%I:%M %p'),
-            'end_time': schedule.end_time.strftime('%I:%M %p')
+            'end_time': schedule.end_time.strftime('%I:%M %p'),
             'user_role': teacher.role
         })
 
