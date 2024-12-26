@@ -191,21 +191,22 @@ def create_routine():
 
     # Populate form choices dynamically
     form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
-                            User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()] 
+                            User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
 
     form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
     form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
 
     if form.validate_on_submit():
-        schedule = TeacherSchedule(
-            teacher_id=form.teacher.data,
-            class_id=form.class_.data,
-            subject_id=form.subject.data,
-            day_of_week=form.day_of_week.data,
-            start_time=form.start_time.data,
-            end_time=form.end_time.data
-        )
-        db.session.add(schedule)
+        for day in form.day_of_week.data:  # Iterate over selected days
+            schedule = TeacherSchedule(
+                teacher_id=form.teacher.data,
+                class_id=form.class_.data,
+                subject_id=form.subject.data,
+                day_of_week=day,  # Use the individual day here
+                start_time=form.start_time.data,
+                end_time=form.end_time.data
+            )
+            db.session.add(schedule)
         db.session.commit()
         flash('Schedule created successfully!', 'success')
         return redirect(url_for('app.create_routine'))  # Redirect to the same page after successful creation
