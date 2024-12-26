@@ -111,6 +111,7 @@ def show_routine():
             'day': schedule.day_of_week,
             'start_time': schedule.start_time.strftime('%I:%M %p'),
             'end_time': schedule.end_time.strftime('%I:%M %p')
+            'user_role': teacher.role
         })
 
     # Sort schedules within each day by start_time
