@@ -97,13 +97,13 @@ def show_routine():
             schedules = schedules.filter_by(day_of_week=selected_day)
         schedules = schedules.all()
 
-    # Prepare data for the template
-    routine_data = []
+    # Group schedules by day of the week and sort by start time
+    routine_data = defaultdict(list) 
     for schedule in schedules:
         teacher = User.query.get(schedule.teacher_id)
         class_ = Class.query.get(schedule.class_id)
         subject = Subject.query.get(schedule.subject_id)
-        routine_data.append({
+        routine_data[schedule.day_of_week].append({
             'teacher': teacher.name,
             'class': class_.class_name,
             'subject': subject.subject_name,
@@ -112,7 +112,15 @@ def show_routine():
             'end_time': schedule.end_time.strftime('%I:%M %p')
         })
 
-    return render_template('show_routine.html', routine_data=routine_data, selected_day=selected_day, user_role=user_role)
+    # Sort schedules within each day by start_time
+    for day in routine_data:
+        routine_data[day].sort(key=lambda x: x['start_time'])
+
+    # Order the days of the week
+    day_order = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    ordered_routine_data = [routine_data[day] for day in day_order if day in routine_data]
+
+    return render_template('show_routine.html', routine_data=ordered_routine_data, selected_day=selected_day, user_role=user_role)
 @app.route('/admin_dashboard')
 def admin_dashboard():
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
