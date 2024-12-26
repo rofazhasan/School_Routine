@@ -152,7 +152,7 @@
                 {% for day_schedules in routine_data %} 
                     {% for schedule in day_schedules %}
                         <tr>
-                            <td>{{ schedule.teacher }}</td>
+                            <td>{{ schedule.teacher }}({{schedule.user_role}})</td>
                             <td>{{ schedule.class }}</td>
                             <td>{{ schedule.subject }}</td>
                             <td>{{ schedule.day }}</td>
