@@ -6,8 +6,8 @@
     <title>Create Routine</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa; 
             color: #333;
             margin: 0;
             padding: 0;
@@ -19,16 +19,17 @@
 
         .container {
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 500px;
+            border-radius: 12px; 
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); 
+            padding: 30px; 
+            max-width: 600px; 
             width: 100%;
         }
 
         h1 {
             text-align: center;
-            color: #4CAF50;
+            color: #007bff; 
+            margin-bottom: 20px; 
         }
 
         .flashes ul {
@@ -38,71 +39,93 @@
 
         .flashes li {
             list-style: none;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 5px;
+            padding: 10px 15px; 
+            border-radius: 6px; 
+            margin-bottom: 8px; 
         }
 
         .flashes li.success {
-            background-color: #dff0d8;
-            color: #3c763d;
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
         }
 
         .flashes li.error {
-            background-color: #f2dede;
-            color: #a94442;
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
         }
 
         form div {
-            margin-bottom: 15px;
+            margin-bottom: 18px; 
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px; 
+            font-weight: 600; 
         }
 
         input,
         select,
         button {
             width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px; 
+            font-size: 16px; 
+            border: 1px solid #ced4da; 
+            border-radius: 6px; 
             box-sizing: border-box;
         }
 
+        input:focus,
+        select:focus {
+            outline: none; 
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+        }
+
         button {
-            background-color: #4CAF50;
+            background-color: #007bff; 
             color: white;
             border: none;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600; 
+            transition: background-color 0.3s ease; 
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #0069d9; 
         }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px; 
             text-decoration: none;
-            color: #4CAF50;
-            font-weight: bold;
+            color: #007bff; 
+            font-weight: 600; 
+            transition: color 0.3s ease;
         }
 
         .back-link:hover {
-            color: #45a049;
+            color: #0069d9; 
         }
 
         .error-message {
-            color: red;
-            font-size: 12px;
+            color: #dc3545; 
+            font-size: 14px; 
             margin-top: 5px;
+        }
+
+        /* Improved checkbox styling */
+        .day-checkbox {
+            display: flex;
+            align-items: center; 
+            margin-bottom: 10px; 
+        }
+
+        .day-checkbox input[type="checkbox"] {
+            width: auto; 
+            margin-right: 8px; 
         }
     </style>
 </head>
@@ -147,28 +170,30 @@
             </div>
             <div>
                 {{ form.day_of_week.label }}
-                <br> 
+                <br>
                 {% for day in ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %}
-                    <input type="checkbox" name="day_of_week" value="{{ day }}" /> {{ day }} 
+                <div class="day-checkbox"> 
+                    <input type="checkbox" name="day_of_week" value="{{ day }}" /> {{ day }}
+                </div>
                 {% endfor %}
             </div>
             <div>
-                    {{ form.start_time.label }}
-                    {{ form.start_time }}
-                    {% for error in form.start_time.errors %}
-                    <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </div>
-                <div>
-                    {{ form.end_time.label }}
-                    {{ form.end_time }}
-                    {% for error in form.end_time.errors %}
-                    <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </div>
-                <div>
-                    {{ form.submit }}
-                </div>
+                {{ form.start_time.label }}
+                {{ form.start_time }}
+                {% for error in form.start_time.errors %}
+                <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.end_time.label }}
+                {{ form.end_time }}
+                {% for error in form.end_time.errors %}
+                <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.submit }}
+            </div>
         </form>
 
         <a href="{{ url_for('app.admin_dashboard') }}" class="back-link">Back to Dashboard</a>
