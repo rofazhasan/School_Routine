@@ -79,8 +79,6 @@ def show_routine():
         return redirect(url_for('app.login'))
     user_id = session.get('user_id')
     user_role = session.get('user_role')
-    if session.get('user_id')==2:
-        user_role = 'Head Sir'
 
     if request.method == 'POST':
         selected_day = request.form.get('day_of_week')
