@@ -15,22 +15,26 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 10px; /* Reduced padding for smaller screens */
+            padding: 10px;
+            /* Reduced padding for smaller screens */
             margin: 0;
         }
 
         .container {
             background: rgba(255, 255, 255, 0.9);
-            padding: 1rem; /* Reduced padding for smaller screens */
+            padding: 1rem;
+            /* Reduced padding for smaller screens */
             border-radius: 12px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 900px;
-            overflow-x: auto; /* Added for horizontal scrolling */
+            overflow-x: auto;
+            /* Added for horizontal scrolling */
         }
 
         h1 {
-            font-size: 1.8rem; /* Slightly smaller font size */
+            font-size: 1.8rem;
+            /* Slightly smaller font size */
             font-weight: bold;
             color: #6a11cb;
             margin-bottom: 1rem;
@@ -43,8 +47,10 @@
             border-collapse: collapse;
         }
 
-        table th, table td {
-            padding: 8px; /* Reduced padding */
+        table th,
+        table td {
+            padding: 8px;
+            /* Reduced padding */
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -52,7 +58,8 @@
         table th {
             background: #6a11cb;
             color: #fff;
-            white-space: nowrap; /* Prevent header cells from wrapping */
+            white-space: nowrap;
+            /* Prevent header cells from wrapping */
         }
 
         table tbody tr:nth-child(even) {
@@ -87,24 +94,27 @@
         /* Media query for smaller screens */
         @media screen and (max-width: 768px) {
             h1 {
-                font-size: 1.5rem; 
+                font-size: 1.5rem;
             }
 
             table {
-                font-size: 0.8rem; 
+                font-size: 0.8rem;
             }
 
             .form-select {
-                width: 100%; /* Make select element take full width */
-                margin-bottom: 10px; 
+                width: 100%;
+                /* Make select element take full width */
+                margin-bottom: 10px;
             }
 
             .d-flex.align-items-center.justify-content-center {
-                flex-direction: column; /* Stack form elements vertically */
+                flex-direction: column;
+                /* Stack form elements vertically */
             }
 
             .btn-primary {
-                width: 100%; /* Make button take full width */
+                width: 100%;
+                /* Make button take full width */
             }
         }
     </style>
@@ -120,7 +130,8 @@
                 <option value="Sunday" {% if selected_day == 'Sunday' %}selected{% endif %}>Sunday</option>
                 <option value="Monday" {% if selected_day == 'Monday' %}selected{% endif %}>Monday</option>
                 <option value="Tuesday" {% if selected_day == 'Tuesday' %}selected{% endif %}>Tuesday</option>
-                <option value="Wednesday" {% if selected_day == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+                <option value="Wednesday" {% if selected_day == 'Wednesday' %}selected{% endif %}>Wednesday
+                </option>
                 <option value="Thursday" {% if selected_day == 'Thursday' %}selected{% endif %}>Thursday</option>
             </select>
             <button type="submit" class="btn btn-primary ms-2">Filter</button>
@@ -138,21 +149,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% if routine_data %}
-                {% for item in routine_data %}
-                <tr>
-                    <td>{{ item.teacher }}</td>
-                    <td>{{ item.class }}</td>
-                    <td>{{ item.subject }}</td>
-                    <td>{{ item.day }}</td>
-                    <td>{{ item.start_time }}</td>
-                    <td>{{ item.end_time }}</td>
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td colspan="6" style="text-align: center;">No classes found</td>
-                </tr>
+                {% for day_schedules in routine_data %} 
+                    {% for schedule in day_schedules %}
+                        <tr>
+                            <td>{{ schedule.teacher }}</td>
+                            <td>{{ schedule.class }}</td>
+                            <td>{{ schedule.subject }}</td>
+                            <td>{{ schedule.day }}</td>
+                            <td>{{ schedule.start_time }}</td>
+                            <td>{{ schedule.end_time }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %} 
+                {% if not routine_data %}
+                    <tr>
+                        <td colspan="6" style="text-align: center;">No classes found</td>
+                    </tr>
                 {% endif %}
             </tbody>
         </table>
