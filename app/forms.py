@@ -75,7 +75,7 @@ class TeacherScheduleForm(FlaskForm):
         coerce=int,
         validators=[DataRequired(message="Please select a subject.")]
     )
-    day_of_week = SelectField(
+    day_of_week = SelectMultipleField(
         'Day of the Week',
         choices=[
             ('Sunday', 'Sunday'),
@@ -86,7 +86,7 @@ class TeacherScheduleForm(FlaskForm):
             ('Friday', 'Friday'),
             ('Saturday', 'Saturday'),
         ],
-        validators=[DataRequired(message="Please select a day.")]
+        validators=[DataRequired(message="Please select at least one day.")]
     )
     start_time = TimeField(
         'Start Time',
