@@ -72,6 +72,7 @@ def logout():
     session.pop('user_id', None)
     session.pop('user_role', None)
     return redirect(url_for('app.login'))
+    
 @app.route('/show_routine', methods=['GET', 'POST'])
 def show_routine():
     if not session.get('logged_in'):
@@ -98,8 +99,8 @@ def show_routine():
             schedules = schedules.filter_by(day_of_week=selected_day)
         schedules = schedules.all()
 
-    # Group schedules by day of the week and sort by start time
-    routine_data = defaultdict(list) 
+    # Group schedules by day of the week
+    routine_data = defaultdict(list)
     for schedule in schedules:
         teacher = User.query.get(schedule.teacher_id)
         class_ = Class.query.get(schedule.class_id)
@@ -114,12 +115,15 @@ def show_routine():
         })
 
     # Sort schedules within each day by start_time
-    for day in routine_data:
-        routine_data[day].sort(key=lambda x: x['start_time'])
+    for day, day_schedules in routine_data.items():
+        day_schedules.sort(key=lambda x: x['start_time'])
 
-    # Order the days of the week
+    # Order the days of the week (if needed)
     day_order = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    ordered_routine_data = [routine_data[day] for day in day_order if day in routine_data]
+    ordered_routine_data = []
+    for day in day_order:
+        if day in routine_data:
+            ordered_routine_data.append(routine_data[day])
 
     return render_template('show_routine.html', routine_data=ordered_routine_data, selected_day=selected_day, user_role=user_role)
 @app.route('/admin_dashboard')
