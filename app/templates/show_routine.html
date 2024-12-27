@@ -154,7 +154,7 @@
                 <select name="teacher_id" id="teacher_id" class="form-select">
                     <option value="">All Teachers</option>
                     {% for teacher in teachers %}
-                        <option value="{{ teacher.teacher_id }}" {% if selected_teacher == teacher.teacher_id %}selected{% endif %}>{{ teacher.name }}</option>
+                        <option value="{{ teacher.user_id }}" {% if selected_teacher == teacher.user_id %}selected{% endif %}>{{ teacher.name }}</option>
                     {% endfor %}
                 </select>
             </div>
