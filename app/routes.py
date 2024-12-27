@@ -249,23 +249,29 @@ def update_routine(schedule_id):
         return redirect(url_for('app.login'))
 
     schedule = TeacherSchedule.query.get_or_404(schedule_id)
-    form = TeacherScheduleForm(obj=schedule)  # Pre-populate the form with existing data
+    form = TeacherScheduleForm(obj=schedule)
 
-    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
-                            User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
+    # Efficiently pre-populate teacher, class, and subject choices
+    teachers = User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()
+    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in teachers]
     form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
     form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
 
     if form.validate_on_submit():
-        schedule.teacher_id = form.teacher.data
-        schedule.class_id = form.class_.data
-        schedule.subject_id = form.subject.data
-        # Assuming day_of_week remains the same, otherwise handle it accordingly
-        schedule.start_time = form.start_time.data
-        schedule.end_time = form.end_time.data
-        db.session.commit()
-        flash('Schedule updated successfully!', 'success')
-        return redirect(url_for('app.show_routine'))  # Redirect to the routine page
+        try:
+            # Update the schedule object with form data
+            schedule.teacher_id = form.teacher.data
+            schedule.class_id = form.class_.data
+            schedule.subject_id = form.subject.data
+            schedule.start_time = form.start_time.data
+            schedule.end_time = form.end_time.data
+
+            db.session.commit()
+            flash('Schedule updated successfully!', 'success')
+            return redirect(url_for('app.show_routine'))
+        except Exception as e:  # Catch potential database errors
+            db.session.rollback()
+            flash(f'Error updating schedule: {str(e)}', 'danger')
 
     return render_template('update_routine.html', form=form, schedule=schedule)
 
