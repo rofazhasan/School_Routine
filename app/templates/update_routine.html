@@ -86,7 +86,7 @@
     <div class="container">
         <h1>Update Routine</h1>
 
-        <form method="POST">
+        <form method="POST" action="{{ url_for('app.update_routine', schedule_id=schedule.schedule_id) }}">
             {{ form.hidden_tag() }} 
 
             <div class="mb-3">
