@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ name }} Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-     <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-       body {
+        body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to right, #f0f4f8, #d9e4f5);
             color: #444;
             margin: 0;
             padding: 0;
-            transition: background-color 0.5s ease, color 0.5s ease; 
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         body.dark-mode {
@@ -34,21 +35,20 @@
             z-index: 100;
         }
 
-       @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-280px); /* Hide on small screens */
-    }
-    .sidebar.show {
-        transform: translateX(0);    /* Show when 'show' class is present */
-    }
-}
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px); 
+            }
+            .sidebar.show {
+                transform: translateX(0);  
+            }
+        }
 
-/* Add this to show the sidebar initially on larger screens */
-@media (min-width: 769px) { 
-    .sidebar {
-        transform: translateX(0);     /* Show on larger screens */
-    }
-}
+        @media (min-width: 769px) { 
+            .sidebar {
+                transform: translateX(0);   
+            }
+        }
 
         .sidebar:hover {
             transform: translateX(10px);
@@ -84,7 +84,6 @@
             transition: margin-left 0.3s ease-in-out;
         }
 
-        /* Adjust content margin for smaller screens */
         @media (max-width: 768px) {
             .content {
                 margin-left: 0; 
@@ -233,6 +232,7 @@
                 color: black; 
             }
         }
+
         .flash-message {
             padding: 10px;
             margin-bottom: 1rem;
@@ -249,7 +249,7 @@
     </style>
 </head>
 <body>
-    <div class="hamburger" onclick="toggleSidebar()">
+    <div class="hamburger" onclick="toggleSidebar()" aria-expanded="false"> 
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
@@ -259,7 +259,8 @@
         <a href="/admin/add_user">Create User</a>
         <a href="/admin/create_routine">Create Routine</a>
         <a href="/show_routine">View Routine</a>
-        <a href="/news">Manage News</a> <a href="/change_password">Change Password</a>
+        <a href="/news">Manage News</a> 
+        <a href="/change_password">Change Password</a>
         <a href="{{ url_for('app.logout') }}">Log out</a>
     </div>
 
@@ -273,7 +274,13 @@
         </nav>
 
         <div class="running-text">
-            <span>.</span>
+            <span>
+                {% if latest_news %}
+                    {{ latest_news.content }}
+                {% else %}
+                    No news available.
+                {% endif %}
+            </span>
         </div>
 
         <div class="row mt-4">
@@ -298,59 +305,59 @@
         </div>
 
         <div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card p-4">
-            <h5>Now Running All Classes</h5>
-            {% if running_classes == "No classes running now" %}
-                <p>{{ running_classes }}</p>
-            {% else %}
-                <ul>
-                {% for class_ in running_classes %}
-                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card p-4">
-            <h5>Today All Classes</h5>
-            {% if todays_classes == "No classes today" %}
-                <p>{{ todays_classes }}</p>
-            {% else %}
-                <ul>
-                {% for class_ in todays_classes %}
-                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}
-                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h5>Now Running All Classes</h5>
+                    {% if running_classes == "No classes running now" %}
+                        <p>{{ running_classes }}</p>
+                    {% else %}
+                        <ul>
+                            {% for class_ in running_classes %}
+                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h5>Today All Classes</h5>
+                    {% if todays_classes == "No classes today" %}
+                        <p>{{ todays_classes }}</p>
+                    {% else %}
+                        <ul>
+                            {% for class_ in todays_classes %}
+                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}
+                                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-     <footer>
-    <p>
-        Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span>
-    </p>
-    <div>
-        <a href="https://www.facebook.com/rofazhasanrafiu/" target="_blank" title="Facebook">
-            <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/md-rofaz-hasan-rafiu" target="_blank" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-        </a>
-    </div>
-</footer>
-    </div>
+        <footer>
+            <p>
+                Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span>
+            </p>
+            <div>
+                <a href="https://www.facebook.com/rofazhasanrafiu/" target="_blank" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/md-rofaz-hasan-rafiu" target="_blank" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </footer>
+    </div> 
 
     <script>
         function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('show'); 
-}
+            const sidebar = document.querySelector('.sidebar');
+            const isExpanded = sidebar.classList.toggle('show');
+            sidebar.setAttribute('aria-expanded', isExpanded); 
+        }
+
         function updateDateTime() {
             const dhakaTimezone = 'Asia/Dhaka';
             const now = new Date();
@@ -374,6 +381,7 @@
         }
 
         setInterval(updateDateTime, 1000);
+
         function toggleDarkMode() {
             const body = document.body;
             body.classList.toggle('dark-mode');
