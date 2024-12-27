@@ -262,6 +262,7 @@ def update_routine(schedule_id):
             # --- Additional checks for unexpected values ---
             if not all([form.teacher.data, form.class_.data, form.subject.data]):
                 flash('Please select a teacher, class, and subject.', 'danger')
+                print("Wrong")
                 return redirect(url_for('app.update_routine', schedule_id=schedule_id))
 
             # --- Explicitly convert to integers (if necessary) ---
