@@ -234,7 +234,31 @@ def create_routine():
         return redirect(url_for('app.create_routine'))  # Redirect to the same page after successful creation
 
     return render_template('create_routine.html', form=form)
+@app.route('/admin/update_routine/<int:schedule_id>', methods=['GET', 'POST'])
+def update_routine(schedule_id):
+    if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
+        return redirect(url_for('app.login'))
 
+    schedule = TeacherSchedule.query.get_or_404(schedule_id)
+    form = TeacherScheduleForm(obj=schedule)  # Pre-populate the form with existing data
+
+    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
+                            User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
+    form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
+    form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
+
+    if form.validate_on_submit():
+        schedule.teacher_id = form.teacher.data
+        schedule.class_id = form.class_.data
+        schedule.subject_id = form.subject.data
+        # Assuming day_of_week remains the same, otherwise handle it accordingly
+        schedule.start_time = form.start_time.data
+        schedule.end_time = form.end_time.data
+        db.session.commit()
+        flash('Schedule updated successfully!', 'success')
+        return redirect(url_for('app.show_routine'))  # Redirect to the routine page
+
+    return render_template('update_routine.html', form=form, schedule=schedule)
 
 @app.route('/admin/add_user', methods=["GET", "POST"])
 def add_user():
