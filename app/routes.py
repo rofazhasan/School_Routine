@@ -253,7 +253,7 @@ def update_routine(schedule_id):
         flash('Schedule not found!', 'danger')
         return redirect(url_for('app.show_routine'))  # Or wherever you want to redirect
 
-    form = TeacherScheduleForm()
+    form = TeacherScheduleForm(obj=schedule)
 
     form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
     form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
