@@ -92,11 +92,12 @@ def show_routine():
     if selected_day:
         schedules = schedules.filter_by(day_of_week=selected_day)
     if selected_class:
-        schedules = schedules.filter_by(class_id=selected_class)
+        schedules = schedules.filter_by(class_id=int(selected_class))  # Convert selected_class to integer
     if selected_teacher:
-        schedules = schedules.filter_by(teacher_id=selected_teacher)
+        schedules = schedules.filter_by(teacher_id=int(selected_teacher))  # Convert selected_teacher to integer
 
     schedules = schedules.all()
+
 
     routine_data = defaultdict(list)
     for schedule in schedules:
@@ -124,17 +125,17 @@ def show_routine():
 
     # Get all classes and teachers for filter options
     classes = Class.query.all()
-    teachers = User.query.filter_by(role='Teacher').all()
+    teachers = User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()  # Filter for teachers and admins
 
-    return render_template('show_routine.html', 
-                           routine_data=ordered_routine_data, 
-                           selected_day=selected_day, 
+    return render_template('show_routine.html',
+                           routine_data=ordered_routine_data,
+                           selected_day=selected_day,
                            user_role=user_role,
-                           classes=classes, 
+                           classes=classes,
                            teachers=teachers,
                            selected_class=selected_class,
                            selected_teacher=selected_teacher,
-                          schedules=schedules)
+                           schedules=schedules)
 @app.route('/admin_dashboard')
 def admin_dashboard():
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
