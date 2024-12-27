@@ -170,29 +170,30 @@
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
+                    {% if user_role == 'Admin' %}
+                        <th>Actions</th> 
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
-                {% for day_schedules in routine_data %}
-                    {% for schedule in day_schedules %}
-                        <tr>
-                            <td>{{ schedule.teacher }} ({{ schedule.user_role if schedule.user_role != 'Admin' else 'Head Sir' }})</td>
-                            <td>{{ schedule.class }}</td>
-                            <td>{{ schedule.subject }}</td>
-                            <td>{{ schedule.day }}</td>
-                            <td>{{ schedule.start_time }}</td>
-                            <td>{{ schedule.end_time }}</td>
-                            {% if user_role == 'Admin' %}
+                {% for schedule in schedules %} 
+                    <tr>
+                        <td>{{ schedule.teacher.name }} ({{ schedule.teacher.role if schedule.teacher.role != 'Admin' else 'Head Sir' }})</td> 
+                        <td>{{ schedule.class_.class_name }}</td> 
+                        <td>{{ schedule.subject.subject_name }}</td> 
+                        <td>{{ schedule.day_of_week }}</td>
+                        <td>{{ schedule.start_time.strftime('%I:%M %p') }}</td>
+                        <td>{{ schedule.end_time.strftime('%I:%M %p') }}</td>
+                        {% if user_role == 'Admin' %}
                             <td>
                                 <a href="{{ url_for('app.update_routine', schedule_id=schedule.schedule_id) }}" class="btn btn-sm btn-warning">Update</a> 
                             </td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
+                        {% endif %}
+                    </tr>
                 {% endfor %}
-                {% if not routine_data %}
+                {% if not schedules %} 
                     <tr>
-                        <td colspan="6" style="text-align: center;">No classes found</td>
+                        <td colspan="7" style="text-align: center;">No classes found</td> 
                     </tr>
                 {% endif %}
             </tbody>
