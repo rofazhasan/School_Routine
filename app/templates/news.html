@@ -4,7 +4,7 @@
     <title>News</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
@@ -18,7 +18,7 @@
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto; /* Added top/bottom margin */
             padding: 20px;
             background: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -45,6 +45,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box; /* Include padding and border in element's total width */
         }
 
         button {
@@ -52,7 +53,7 @@
             color: #fff;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease; /* Add transition for hover effect */
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -99,11 +100,8 @@
 
         /* Responsive design for mobile phones */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-
             .container {
+                margin: 10px; /* Reduced margin for smaller screens */
                 padding: 15px;
             }
 
@@ -122,6 +120,7 @@
     </style>
 </head>
 <body>
+
 {% if user_role == 'Admin' %}
     <div class="container">
         <h1>Create News</h1>
@@ -151,8 +150,8 @@
 
 <div class="container">
     <h2>All News</h2>
-<a href="{{ url_for('app.news', show_all='True') }}">View All News</a> 
-<ul>
+    <a href="{{ url_for('app.news', show_all='True') }}">View All News</a>  
+    <ul>
     {% for news_item in all_news %}
         <li>
             <h3>{{ news_item.title }}</h3>
@@ -165,13 +164,11 @@
             {% endif %}
         </li>
     {% endfor %}
-</ul>
-
-
-
+    </ul>
 </div>
-    <a href="{{ url_for('app.admin_dashboard')  if user_role == 'Admin' else url_for('app.user_dashboard') }}" class="back-link">Go back to Dashboard</a>
-    </body>
+
+<a href="{{ url_for('app.admin_dashboard')  if user_role == 'Admin' else url_for('app.user_dashboard') }}" class="back-link">Go back to Dashboard</a>
+
 <script>
 function confirmDelete(news_id) {
     if (confirm('Are you sure you want to delete this news item?')) {
@@ -180,4 +177,5 @@ function confirmDelete(news_id) {
 }
 </script>
 
+</body>
 </html>
