@@ -76,29 +76,28 @@ def logout():
 @app.route('/show_routine', methods=['GET', 'POST'])
 def show_routine():
     if not session.get('logged_in'):
-        return redirect(url_for('app.login'))
+        return redirect(url_for('app.login'))  # Replace 'app.login' with your login route
     user_id = session.get('user_id')
     user_role = session.get('user_role')
 
-    if request.method == 'POST':
-        selected_day = request.form.get('day_of_week')
-    else:
-        selected_day = None  # No day selected by default
+    selected_day = request.form.get('day_of_week') if request.method == 'POST' else None
+    selected_class = request.form.get('class_id') if request.method == 'POST' else None
+    selected_teacher = request.form.get('teacher_id') if request.method == 'POST' else None
 
-    if user_role == 'Admin':
-        # Admin view: Show all schedules
-        schedules = TeacherSchedule.query
-        if selected_day:
-            schedules = schedules.filter_by(day_of_week=selected_day)
-        schedules = schedules.all()
-    else:
-        # User view: Show only their schedules
-        schedules = TeacherSchedule.query.filter_by(teacher_id=user_id)
-        if selected_day:
-            schedules = schedules.filter_by(day_of_week=selected_day)
-        schedules = schedules.all()
+    schedules = TeacherSchedule.query
 
-    # Group schedules by day of the week
+    if user_role != 'Admin':
+        schedules = schedules.filter_by(teacher_id=user_id)
+
+    if selected_day:
+        schedules = schedules.filter_by(day_of_week=selected_day)
+    if selected_class:
+        schedules = schedules.filter_by(class_id=selected_class)
+    if selected_teacher:
+        schedules = schedules.filter_by(teacher_id=selected_teacher)
+
+    schedules = schedules.all()
+
     routine_data = defaultdict(list)
     for schedule in schedules:
         teacher = User.query.get(schedule.teacher_id)
@@ -114,18 +113,27 @@ def show_routine():
             'user_role': teacher.role
         })
 
-    # Sort schedules within each day by start_time
     for day, day_schedules in routine_data.items():
         day_schedules.sort(key=lambda x: x['start_time'])
 
-    # Order the days of the week (if needed)
     day_order = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     ordered_routine_data = []
     for day in day_order:
         if day in routine_data:
             ordered_routine_data.append(routine_data[day])
 
-    return render_template('show_routine.html', routine_data=ordered_routine_data, selected_day=selected_day, user_role=user_role)
+    # Get all classes and teachers for filter options
+    classes = Class.query.all()
+    teachers = User.query.filter_by(role='Teacher').all()
+
+    return render_template('show_routine.html', 
+                           routine_data=ordered_routine_data, 
+                           selected_day=selected_day, 
+                           user_role=user_role,
+                           classes=classes, 
+                           teachers=teachers,
+                           selected_class=selected_class,
+                           selected_teacher=selected_teacher)
 @app.route('/admin_dashboard')
 def admin_dashboard():
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
