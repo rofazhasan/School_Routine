@@ -91,14 +91,22 @@ def show_routine():
 
     if selected_day:
         schedules = schedules.filter_by(day_of_week=selected_day)
+
     if selected_class:
-        schedules = schedules.filter_by(class_id=int(selected_class))  # Convert selected_class to integer
+        try:
+            selected_class = int(selected_class)  # Convert to integer
+            schedules = schedules.filter_by(class_id=selected_class)
+        except ValueError:
+            pass  # Handle invalid input (e.g., non-numeric string)
+
     if selected_teacher:
-        schedules = schedules.filter_by(teacher_id=int(selected_teacher))  # Convert selected_teacher to integer
+        try:
+            selected_teacher = int(selected_teacher)  # Convert to integer
+            schedules = schedules.filter_by(teacher_id=selected_teacher)
+        except ValueError:
+            pass  # Handle invalid input
 
     schedules = schedules.all()
-
-
     routine_data = defaultdict(list)
     for schedule in schedules:
         teacher = User.query.get(schedule.teacher_id)
@@ -114,7 +122,6 @@ def show_routine():
             'user_role': teacher.role,
             'schedule_id': schedule.schedule_id
         })
-
     for day, day_schedules in routine_data.items():
         day_schedules.sort(key=lambda x: x['start_time'])
 
