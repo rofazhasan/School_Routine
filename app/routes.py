@@ -249,11 +249,12 @@ def update_routine(schedule_id):
         return redirect(url_for('app.login'))
 
     schedule = TeacherSchedule.query.filter_by(schedule_id = schedule_id).first()
-    form = TeacherScheduleForm(obj=schedule)
+    form = TeacherScheduleForm()
 
     # Efficiently pre-populate teacher, class, and subject choices
-    teachers = User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()
-    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in teachers]
+    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
+                            User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
+
     form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
     form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
 
