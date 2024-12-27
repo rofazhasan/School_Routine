@@ -178,12 +178,12 @@
             <tbody>
                 {% for schedule in schedules %} 
                     <tr>
-                        <td>{{ schedule.teacher.name }} ({{ schedule.teacher.role if schedule.teacher.role != 'Admin' else 'Head Sir' }})</td> 
-                        <td>{{ schedule.class_.class_name }}</td> 
-                        <td>{{ schedule.subject.subject_name }}</td> 
-                        <td>{{ schedule.day_of_week }}</td>
-                        <td>{{ schedule.start_time.strftime('%I:%M %p') }}</td>
-                        <td>{{ schedule.end_time.strftime('%I:%M %p') }}</td>
+                         <td>{{ schedule.teacher }} ({{ 'Head Sir' if schedule.user_role == 'Admin' else ('AHM' if schedule.user_role == 'Assistant Head Teacher' else 'AT') }})</td>
+                            <td>{{ schedule.class }}</td>
+                            <td>{{ schedule.subject }}</td>
+                            <td>{{ schedule.day }}</td>
+                            <td>{{ schedule.start_time }}</td>
+                            <td>{{ schedule.end_time }}</td>
                         {% if user_role == 'Admin' %}
                             <td>
                                 <a href="{{ url_for('app.update_routine', schedule_id=schedule.schedule_id) }}" class="btn btn-sm btn-warning">Update</a> 
@@ -200,6 +200,6 @@
         </table>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <a href="{{ url_for('app.admin_dashboard')  if user_role == 'Admin' else url_for('app.user_dashboard') }}" class="back-link">Go back to Dashboard</a> 
+    <a href="{{ url_for('app.admin_dashboard')  if user_role == 'Admin' else url_for('app.user_dashboard') }}" class="back-link"><b style="color:white;">Go back to Dashboard</b></a> 
 </body>
 </html>
