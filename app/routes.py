@@ -248,7 +248,7 @@ def update_routine(schedule_id):
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
         return redirect(url_for('app.login'))
 
-    schedule = TeacherSchedule.query.get_or_404(schedule_id)
+    schedule = TeacherSchedule.query.filter_by(schedule_id = schedule_id).first()
     form = TeacherScheduleForm(obj=schedule)
 
     # Efficiently pre-populate teacher, class, and subject choices
