@@ -133,7 +133,8 @@ def show_routine():
                            classes=classes, 
                            teachers=teachers,
                            selected_class=selected_class,
-                           selected_teacher=selected_teacher)
+                           selected_teacher=selected_teacher,
+                          schedules=schedules)
 @app.route('/admin_dashboard')
 def admin_dashboard():
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
