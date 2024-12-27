@@ -189,7 +189,7 @@
                             <td>{{ schedule.end_time }}</td>
                             {% if user_role == 'Admin' %}
                                 <td>
-                                    <a href="{{ url_for('app.update_routine', schedule_id=schedule['schedule_id']) }}" class="btn btn-warning btn-sm">Update</a>
+                                    <a href="{{ url_for('app.update_routine', schedule_id=int(schedule['schedule_id'])) }}" class="btn btn-warning btn-sm">Update</a>
                                 </td>
                             {% endif %}
                         </tr>
