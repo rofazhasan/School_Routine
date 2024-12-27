@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ name }} Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-     <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-       body {
+        body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to right, #f0f4f8, #d9e4f5);
             color: #444;
             margin: 0;
             padding: 0;
-            transition: background-color 0.5s ease, color 0.5s ease; 
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         body.dark-mode {
@@ -32,23 +32,18 @@
             box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease-in-out;
             z-index: 100;
+            overflow-y: auto; /* Add scrollbar if content overflows */
         }
 
-       @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-280px); /* Hide on small screens */
-    }
-    .sidebar.show {
-        transform: translateX(0);    /* Show when 'show' class is present */
-    }
-}
-
-/* Add this to show the sidebar initially on larger screens */
-@media (min-width: 769px) { 
-    .sidebar {
-        transform: translateX(0);     /* Show on larger screens */
-    }
-}
+        /* Hide sidebar by default on smaller screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
 
         .sidebar:hover {
             transform: translateX(10px);
@@ -80,20 +75,20 @@
 
         .content {
             margin-left: 280px;
-            padding: 20px; 
+            padding: 20px;
             transition: margin-left 0.3s ease-in-out;
         }
 
         /* Adjust content margin for smaller screens */
         @media (max-width: 768px) {
             .content {
-                margin-left: 0; 
+                margin-left: 0;
             }
         }
 
         .navbar {
             background: linear-gradient(to right, #ff6a95, #ff9068);
-            padding: 15px 20px; 
+            padding: 15px 20px;
             border-radius: 10px;
             color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -103,7 +98,7 @@
             align-items: center;
         }
 
-        .navbar .app-name { 
+        .navbar .app-name {
             display: flex;
             align-items: center;
         }
@@ -111,12 +106,12 @@
         .navbar .app-name span {
             font-weight: bold;
             font-size: 1.4rem;
-            margin-right: 10px; 
+            margin-right: 10px;
         }
 
-        .navbar .welcome-message { 
-            font-size: 1.2rem; 
-            word-break: break-word; 
+        .navbar .welcome-message {
+            font-size: 1.2rem;
+            word-break: break-word;
         }
 
         .card {
@@ -126,7 +121,7 @@
             color: #333;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 20px; 
+            margin-bottom: 20px;
         }
 
         .card:hover {
@@ -199,40 +194,26 @@
         }
 
         .hamburger {
-            display: none; 
+            display: none;
             cursor: pointer;
+            position: relative; /* Use relative positioning */
+            z-index: 101; /* Ensure it's on top */
         }
 
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
-                position: absolute; 
-                top: 15px;
-                right: 20px; 
-                z-index: 101; 
-            }
-
-            .hamburger .bar {
-                display: block;
-                width: 25px;
-                height: 3px;
-                margin: 5px auto; 
-                background-color: white;
-            }
-
-            .dark-mode-toggle { 
-                position: fixed;
-                top: 20px;
-                right: 20px; 
-                z-index: 101;
-                cursor: pointer;
-                color: white; 
-            }
-
-            .dark-mode .dark-mode-toggle {
-                color: black; 
             }
         }
+
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: white;
+        }
+
         .flash-message {
             padding: 10px;
             margin-bottom: 1rem;
@@ -245,7 +226,6 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-
     </style>
 </head>
 <body>
@@ -259,21 +239,22 @@
         <a href="/admin/add_user">Create User</a>
         <a href="/admin/create_routine">Create Routine</a>
         <a href="/show_routine">View Routine</a>
-        <a href="/news">Manage News</a> <a href="/change_password">Change Password</a>
+        <a href="/news">Manage News</a>
+        <a href="/change_password">Change Password</a>
         <a href="{{ url_for('app.logout') }}">Log out</a>
     </div>
 
     <div class="content">
         <nav class="navbar">
             <div class="app-name">
-                <span>School Management</span>
+                <span>School Management</span> <span class="material-icons">school</span>
             </div>
             <div class="welcome-message">Welcome, {{ name }}</div>
             <div id="current-datetime" class="datetime-display"></div>
         </nav>
 
         <div class="running-text">
-            <span>.</span>
+            <span>.</span> 
         </div>
 
         <div class="row mt-4">
@@ -298,62 +279,65 @@
         </div>
 
         <div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card p-4">
-            <h5>Now Running All Classes</h5>
-            {% if running_classes == "No classes running now" %}
-                <p>{{ running_classes }}</p>
-            {% else %}
-                <ul>
-                {% for class_ in running_classes %}
-                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h5>Now Running All Classes</h5>
+                    {% if running_classes == "No classes running now" %}
+                        <p>{{ running_classes }}</p>
+                    {% else %}
+                        <ul>
+                            {% for class_ in running_classes %}
+                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h5>Today All Classes</h5>
+                    {% if todays_classes == "No classes today" %}
+                        <p>{{ todays_classes }}</p>
+                    {% else %}
+                        <ul>
+                            {% for class_ in todays_classes %}
+                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}
+                                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card p-4">
-            <h5>Today All Classes</h5>
-            {% if todays_classes == "No classes today" %}
-                <p>{{ todays_classes }}</p>
-            {% else %}
-                <ul>
-                {% for class_ in todays_classes %}
-                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }}) - {{ class_.teacher }}
-                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-        </div>
 
     <footer>
-      <p>Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span></p>
+        <p>Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span></p>
     </footer>
-    </div>
 
     <script>
         function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('show'); 
-}
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('show');
+        }
+
         function updateDateTime() {
             const dhakaTimezone = 'Asia/Dhaka';
             const now = new Date();
             const options = {
                 timeZone: dhakaTimezone,
                 hour12: true,
-                hour: '2-digit', minute: '2-digit', second: '2-digit'
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
             };
             const timeString = now.toLocaleString('en-US', options);
 
             const dateOptions = {
                 timeZone: dhakaTimezone,
-                day: 'numeric', month: 'long', year: 'numeric'
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
             };
             const dateString = now.toLocaleString('en-US', dateOptions);
 
@@ -364,10 +348,6 @@
         }
 
         setInterval(updateDateTime, 1000);
-        function toggleDarkMode() {
-            const body = document.body;
-            body.classList.toggle('dark-mode');
-        }
     </script>
 </body>
 </html>
