@@ -16,25 +16,21 @@
             justify-content: center;
             align-items: center;
             padding: 10px;
-            /* Reduced padding for smaller screens */
             margin: 0;
         }
 
         .container {
             background: rgba(255, 255, 255, 0.9);
             padding: 1rem;
-            /* Reduced padding for smaller screens */
             border-radius: 12px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 900px;
-            overflow-x: auto;
-            /* Added for horizontal scrolling */
+            overflow-x: auto; 
         }
 
         h1 {
             font-size: 1.8rem;
-            /* Slightly smaller font size */
             font-weight: bold;
             color: #6a11cb;
             margin-bottom: 1rem;
@@ -50,7 +46,6 @@
         table th,
         table td {
             padding: 8px;
-            /* Reduced padding */
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -58,8 +53,7 @@
         table th {
             background: #6a11cb;
             color: #fff;
-            white-space: nowrap;
-            /* Prevent header cells from wrapping */
+            white-space: nowrap; 
         }
 
         table tbody tr:nth-child(even) {
@@ -102,20 +96,34 @@
             }
 
             .form-select {
-                width: 100%;
-                /* Make select element take full width */
+                width: 100%; 
                 margin-bottom: 10px;
             }
 
             .d-flex.align-items-center.justify-content-center {
-                flex-direction: column;
-                /* Stack form elements vertically */
+                flex-direction: column; 
             }
 
             .btn-primary {
-                width: 100%;
-                /* Make button take full width */
+                width: 100%; 
             }
+        }
+
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .filter-form label {
+            margin-right: 0.5rem;
+            color: black; /* Label text color */
+        }
+
+        .filter-form select, 
+        .filter-form button {
+            margin-right: 0.5rem;
         }
     </style>
 </head>
@@ -123,18 +131,26 @@
     <div class="container">
         <h1>Routine</h1>
 
-        <form method="POST" class="mb-3 d-flex align-items-center justify-content-center">
-            <label for="day_of_week" class="me-2"><b style="color:black">Select Day:</b></label>
-            <select name="day_of_week" id="day_of_week" class="form-select w-auto">
+        <form method="POST" class="filter-form"> 
+            <label for="day_of_week">Select Day:</label>
+            <select name="day_of_week" id="day_of_week" class="form-select">
                 <option value="">All Days</option>
                 <option value="Sunday" {% if selected_day == 'Sunday' %}selected{% endif %}>Sunday</option>
                 <option value="Monday" {% if selected_day == 'Monday' %}selected{% endif %}>Monday</option>
                 <option value="Tuesday" {% if selected_day == 'Tuesday' %}selected{% endif %}>Tuesday</option>
-                <option value="Wednesday" {% if selected_day == 'Wednesday' %}selected{% endif %}>Wednesday
-                </option>
+                <option value="Wednesday" {% if selected_day == 'Wednesday' %}selected{% endif %}>Wednesday</option>
                 <option value="Thursday" {% if selected_day == 'Thursday' %}selected{% endif %}>Thursday</option>
+                </select>
+
+            <label for="class_id">Select Class:</label>
+            <select name="class_id" id="class_id" class="form-select">
+                <option value="">All Classes</option>
+                {% for class in classes %}
+                    <option value="{{ class.id }}" {% if selected_class == class.id %}selected{% endif %}>{{ class.class_name }}</option>
+                {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary ms-2">Filter</button>
+
+            <button type="submit" class="btn btn-primary">Filter</button>
         </form>
 
         <table class="table table-bordered">
@@ -152,7 +168,7 @@
                 {% for day_schedules in routine_data %} 
                     {% for schedule in day_schedules %}
                         <tr>
-                            <td>{{ schedule.teacher }}({{ schedule.user_role if schedule.user_role != 'Admin' else 'Head  Sir' }})</td>
+                            <td>{{ schedule.teacher }} ({{ schedule.user_role if schedule.user_role != 'Admin' else 'Head Sir' }})</td>
                             <td>{{ schedule.class }}</td>
                             <td>{{ schedule.subject }}</td>
                             <td>{{ schedule.day }}</td>
