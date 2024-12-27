@@ -111,7 +111,8 @@ def show_routine():
             'day': schedule.day_of_week,
             'start_time': schedule.start_time.strftime('%I:%M %p'),
             'end_time': schedule.end_time.strftime('%I:%M %p'),
-            'user_role': teacher.role
+            'user_role': teacher.role,
+            'schedule_id': schedule.id
         })
 
     for day, day_schedules in routine_data.items():
