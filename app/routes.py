@@ -248,43 +248,34 @@ def update_routine(schedule_id):
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
         return redirect(url_for('app.login'))
 
-    schedule = TeacherSchedule.query.filter_by(schedule_id = schedule_id).first()
+    schedule = TeacherSchedule.query.filter_by(schedule_id=schedule_id).first()
+    if not schedule:
+        flash('Schedule not found!', 'danger')
+        return redirect(url_for('app.show_routine'))  # Or wherever you want to redirect
+
     form = TeacherScheduleForm()
 
-    # Efficiently pre-populate teacher, class, and subject choices
-    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in
-                            User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
-
+    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
     form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
     form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
 
     if form.validate_on_submit():
-        print("Form submitted and validated!")  
+        print("Form submitted and validated!")
         try:
-            # --- Additional checks for unexpected values ---
-            if not all([form.teacher.data, form.class_.data, form.subject.data]):
-                flash('Please select a teacher, class, and subject.', 'danger')
-                print("Wrong")
-                return redirect(url_for('app.update_routine', schedule_id=schedule_id))
-
-            # --- Explicitly convert to integers (if necessary) ---
-            teacher_id = int(form.teacher.data)  
-            class_id = int(form.class_.data)
-            subject_id = int(form.subject.data)
-
             # --- Update the schedule object ---
-            schedule.teacher_id = teacher_id
-            schedule.class_id = class_id
-            schedule.subject_id = subject_id
+            schedule.teacher_id = form.teacher.data
+            schedule.class_id = form.class_.data
+            schedule.subject_id = form.subject.data
             schedule.start_time = form.start_time.data
-            schedule.end_time = form.end_time.data
+            schedule.end_time = form.end_time.data 
 
             db.session.commit()
             flash('Schedule updated successfully!', 'success')
             return redirect(url_for('app.show_routine'))
 
-        except Exception as e: 
+        except Exception as e:
             db.session.rollback()
+            print(f"Error updating schedule: {e}")  # Print the exception
             flash(f'Error updating schedule: {str(e)}', 'danger')
 
     return render_template('update_routine.html', form=form, schedule=schedule)
