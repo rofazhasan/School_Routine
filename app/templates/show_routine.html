@@ -149,6 +149,7 @@
                     {% endfor %}
                 </select>
             </div>
+            {% if user_role == 'Admin' %}
             <div>
                 <label for="teacher_id" class="me-2"><b style="color:black">Select Teacher:</b></label>
                 <select name="teacher_id" id="teacher_id" class="form-select">
@@ -158,6 +159,7 @@
                     {% endfor %}
                 </select>
             </div>
+            {% endif %}
             <button type="submit" class="btn btn-primary">Filter</button>
         </form>
 
