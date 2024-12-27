@@ -13,7 +13,7 @@
             color: #444;
             margin: 0;
             padding: 0;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: background-color 0.5s ease, color 0.5s ease; /* Add transition for smooth color change */
         }
 
         body.dark-mode {
@@ -25,7 +25,7 @@
             height: 100vh;
             position: fixed;
             width: 280px;
-            background: linear-gradient(135deg, #602420, #182848);
+            background: linear-gradient(135deg,#602420, #182848);
             color: white;
             padding: 20px;
             box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
@@ -33,11 +33,11 @@
             z-index: 100;
         }
 
+        /* Hide sidebar by default on smaller screens */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-280px);
             }
-
             .sidebar.show {
                 transform: translateX(0);
             }
@@ -73,10 +73,11 @@
 
         .content {
             margin-left: 280px;
-            padding: 20px;
+            padding: 20px; /* Reduced padding */
             transition: margin-left 0.3s ease-in-out;
         }
 
+        /* Adjust content margin for smaller screens */
         @media (max-width: 768px) {
             .content {
                 margin-left: 0;
@@ -85,7 +86,7 @@
 
         .navbar {
             background: linear-gradient(to right, red, #ff9068);
-            padding: 15px 20px;
+            padding: 15px 20px; /* Reduced padding */
             border-radius: 10px;
             color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -93,13 +94,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
         }
 
-        .navbar .app-name {
+        .navbar .app-name { /* Added for app name and hamburger */
             display: flex;
             align-items: center;
-            margin-bottom: 10px; /* Add spacing below app name */
         }
 
         .navbar .app-name span {
@@ -108,10 +107,9 @@
             margin-right: 10px;
         }
 
-        .navbar .welcome-message {
-            font-size: 1.2rem;
-            word-break: break-word;
-            margin-bottom: 10px; /* Add spacing below welcome message */
+        .navbar .welcome-message { /* Added for welcome message */
+            font-size: 1.2rem; /* Slightly smaller font size */
+            word-break: break-word; /* Allow wrapping */
         }
 
         .card {
@@ -121,7 +119,7 @@
             color: #333;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 20px;
+            margin-bottom: 20px; /* Added spacing between cards */
         }
 
         .card:hover {
@@ -148,7 +146,6 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-bottom: 10px; /* Add spacing below datetime */
         }
 
         .btn {
@@ -176,13 +173,8 @@
         }
 
         @keyframes marquee {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-100%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
 
         footer {
@@ -200,45 +192,40 @@
         }
 
         .hamburger {
-            display: none;
+            display: none; 
             cursor: pointer;
         }
 
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
-                position: relative; /* Changed to relative for better placement */
+                position: absolute; 
                 top: 15px;
-                left: 15px; /* Adjusted position */
-                z-index: 101;
+                right: 20px; 
+                z-index: 101; 
             }
 
             .hamburger .bar {
                 display: block;
                 width: 25px;
                 height: 3px;
-                margin: 5px auto;
+                margin: 5px auto; 
                 background-color: white;
             }
 
-            .dark-mode-toggle {
+            .dark-mode-toggle { 
                 position: fixed;
                 top: 20px;
-                right: 20px;
+                right: 20px; 
                 z-index: 101;
                 cursor: pointer;
-                color: white;
+                color: white; 
             }
 
             .dark-mode .dark-mode-toggle {
-                color: black;
-            }
-
-            .navbar .welcome-message {
-                font-size: 1rem; /* Smaller font size on mobile */
+                color: black; 
             }
         }
-
         .flash-message {
             padding: 10px;
             margin-bottom: 1rem;
@@ -252,48 +239,11 @@
             border: 1px solid #f5c6cb;
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 101;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-        }
-
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
     </style>
 </head>
 
 <body>
-    <div class="hamburger" onclick="toggleSidebar()">
+     <div class="hamburger" onclick="toggleSidebar()">
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
@@ -309,13 +259,12 @@
     <div class="content">
         <nav class="navbar">
             <div class="app-name">
-                <span></span> 
+                <span></span>
             </div>
             <div class="welcome-message">Welcome, {{ name }} ({{ designation }})</div>
             <div id="current-datetime" class="datetime-display"></div>
         </nav>
-
-        <div class="running-text">
+<div class="running-text">
             <a href="#" onclick="showAllNews()">
                 <span>
                     {% if latest_news %}
@@ -326,7 +275,6 @@
                 </span>
             </a>
         </div>
-
         <div class="row">
             <div class="col-md-4">
                 <div class="card text-center p-4">
@@ -336,10 +284,10 @@
                             {{ todays_classes }}
                         {% else %}
                             <ul>
-                                {% for class_ in todays_classes %}
-                                    <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }})
-                                        <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
-                                {% endfor %}
+                            {% for class_ in todays_classes %}
+                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }})
+                                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
+                            {% endfor %}
                             </ul>
                         {% endif %}
                     </p>
@@ -349,16 +297,17 @@
                 <div class="card text-center p-4">
                     <h5>Current Class</h5>
                     {% if current_class %}
-                        <p>{{ current_class.class }} - {{ current_class.subject }} ({{ current_class.section }})</p>
-                        <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
-                    {% else %}
-                        <p>No class in session</p>
-                    {% endif %}
+    <p>{{ current_class.class }} - {{ current_class.subject }} ({{ current_class.section }})</p> 
+    <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
+{% else %}
+    <p>No class in session</p>
+{% endif %}
+
                 </div>
             </div>
+            </div>
         </div>
-
-        <div id="all-news-modal" class="modal">
+<div id="all-news-modal" class="modal">
             <div class="modal-content">
                 <span class="close-btn" onclick="closeAllNewsModal()">&times;</span>
                 <h2>All News</h2>
@@ -373,42 +322,40 @@
                 </ul>
             </div>
         </div>
-
         <footer>
             <p>Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span></p>
         </footer>
     </div>
 
-    <script>
-        function updateDateTime() {
-            const dhakaTimezone = 'Asia/Dhaka';
-            const now = new Date();
-            const options = {
-                timeZone: dhakaTimezone,
-                hour12: true,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            const timeString = now.toLocaleString('en-US', options);
+  <script>
+    function updateDateTime() {
+      const dhakaTimezone = 'Asia/Dhaka';
+      const now = new Date();
+      const options = {
+        timeZone: dhakaTimezone,
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+      const timeString = now.toLocaleString('en-US', options);
 
-            const dateOptions = {
-                timeZone: dhakaTimezone,
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            };
-            const dateString = now.toLocaleString('en-US', dateOptions);
+      const dateOptions = {
+        timeZone: dhakaTimezone,
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      };
+      const dateString = now.toLocaleString('en-US', dateOptions);
 
-            document.getElementById('current-datetime').innerHTML = `
-                <div>Date: ${dateString}</div>
-                <div>Time: ${timeString}</div>
-            `;
-        }
+      document.getElementById('current-datetime').innerHTML = `
+          <div>Date: ${dateString}</div>
+          <div>Time: ${timeString}</div>
+      `;
+    }
 
-        setInterval(updateDateTime, 1000);
-
-        function updateRemainingTime() {
+    setInterval(updateDateTime, 1000);
+    function updateRemainingTime() {
             var remainingTimeElement = document.getElementById("remaining-time");
             if (remainingTimeElement) {
                 var timeParts = remainingTimeElement.textContent.split(":");
@@ -428,6 +375,7 @@
                             minutes = 59;
                             seconds = 59;
                         } else {
+                            // Time's up! You might want to refresh the page or update the current class info
                             remainingTimeElement.textContent = "Class ended";
                             return;
                         }
@@ -435,26 +383,26 @@
                 }
 
                 var newTimeString = hours.toString().padStart(2, '0') + ":" +
-                    minutes.toString().padStart(2, '0') + ":" +
-                    seconds.toString().padStart(2, '0');
+                                    minutes.toString().padStart(2, '0') + ":" +
+                                    seconds.toString().padStart(2, '0');
                 remainingTimeElement.textContent = newTimeString;
             }
         }
 
+        // Update remaining time every second
         setInterval(updateRemainingTime, 1000);
-
-        function showAllNews() {
+    function showAllNews() {
             document.getElementById("all-news-modal").style.display = "block";
         }
 
         function closeAllNewsModal() {
             document.getElementById("all-news-modal").style.display = "none";
         }
-
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('show');
-        }
+      function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('show'); 
+}
     </script>
 </body>
+
 </html>
