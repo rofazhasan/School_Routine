@@ -259,17 +259,28 @@ def update_routine(schedule_id):
 
     if form.validate_on_submit():
         try:
-            # Update the schedule object with form data
-            schedule.teacher_id = form.teacher.data
-            schedule.class_id = form.class_.data
-            schedule.subject_id = form.subject.data
+            # --- Additional checks for unexpected values ---
+            if not all([form.teacher.data, form.class_.data, form.subject.data]):
+                flash('Please select a teacher, class, and subject.', 'danger')
+                return redirect(url_for('app.update_routine', schedule_id=schedule_id))
+
+            # --- Explicitly convert to integers (if necessary) ---
+            teacher_id = int(form.teacher.data)  
+            class_id = int(form.class_.data)
+            subject_id = int(form.subject.data)
+
+            # --- Update the schedule object ---
+            schedule.teacher_id = teacher_id
+            schedule.class_id = class_id
+            schedule.subject_id = subject_id
             schedule.start_time = form.start_time.data
             schedule.end_time = form.end_time.data
 
             db.session.commit()
             flash('Schedule updated successfully!', 'success')
             return redirect(url_for('app.show_routine'))
-        except Exception as e:  # Catch potential database errors
+
+        except Exception as e: 
             db.session.rollback()
             flash(f'Error updating schedule: {str(e)}', 'danger')
 
