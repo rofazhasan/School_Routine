@@ -247,7 +247,7 @@ def create_routine():
 def update_routine(schedule_id):
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
         return redirect(url_for('app.login'))
-
+    schedule_id  = int(schedule_id)
     schedule = TeacherSchedule.query.filter_by(schedule_id=schedule_id).first()
     if not schedule:
         flash('Schedule not found!', 'danger')
