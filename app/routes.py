@@ -258,6 +258,7 @@ def update_routine(schedule_id):
     form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
 
     if form.validate_on_submit():
+        print("Form submitted and validated!")  
         try:
             # --- Additional checks for unexpected values ---
             if not all([form.teacher.data, form.class_.data, form.subject.data]):
