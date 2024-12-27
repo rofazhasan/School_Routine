@@ -110,11 +110,11 @@
         <form method="POST" action="/login">
             {{ form.hidden_tag() }}
             <div class="mb-3">
-                {{ form.phone_number.label }}
+                <b style="color:black;">{{ form.phone_number.label }}</b>
                 {{ form.phone_number(class="form-control") }}
             </div>
             <div class="mb-3">
-                {{ form.password.label }}
+                <bstyle="color:black;">{{ form.password.label }}</b>
                 {{ form.password(class="form-control") }}
             </div>
     
