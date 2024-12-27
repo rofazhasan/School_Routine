@@ -13,7 +13,7 @@
             color: #444;
             margin: 0;
             padding: 0;
-            transition: background-color 0.5s ease, color 0.5s ease; /* Add transition for smooth color change */
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         body.dark-mode {
@@ -25,7 +25,7 @@
             height: 100vh;
             position: fixed;
             width: 280px;
-            background: linear-gradient(135deg,#602420, #182848);
+            background: linear-gradient(135deg, #602420, #182848);
             color: white;
             padding: 20px;
             box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
@@ -33,11 +33,11 @@
             z-index: 100;
         }
 
-        /* Hide sidebar by default on smaller screens */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-280px);
             }
+
             .sidebar.show {
                 transform: translateX(0);
             }
@@ -73,11 +73,10 @@
 
         .content {
             margin-left: 280px;
-            padding: 20px; /* Reduced padding */
+            padding: 20px;
             transition: margin-left 0.3s ease-in-out;
         }
 
-        /* Adjust content margin for smaller screens */
         @media (max-width: 768px) {
             .content {
                 margin-left: 0;
@@ -86,7 +85,7 @@
 
         .navbar {
             background: linear-gradient(to right, red, #ff9068);
-            padding: 15px 20px; /* Reduced padding */
+            padding: 15px 20px;
             border-radius: 10px;
             color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -96,7 +95,7 @@
             align-items: center;
         }
 
-        .navbar .app-name { /* Added for app name and hamburger */
+        .navbar .app-name {
             display: flex;
             align-items: center;
         }
@@ -107,9 +106,9 @@
             margin-right: 10px;
         }
 
-        .navbar .welcome-message { /* Added for welcome message */
-            font-size: 1.2rem; /* Slightly smaller font size */
-            word-break: break-word; /* Allow wrapping */
+        .navbar .welcome-message {
+            font-size: 1.2rem;
+            word-break: break-word;
         }
 
         .card {
@@ -119,7 +118,7 @@
             color: #333;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 20px; /* Added spacing between cards */
+            margin-bottom: 20px;
         }
 
         .card:hover {
@@ -173,8 +172,13 @@
         }
 
         @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
         }
 
         footer {
@@ -192,40 +196,41 @@
         }
 
         .hamburger {
-            display: none; 
+            display: none;
             cursor: pointer;
         }
 
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
-                position: absolute; 
+                position: absolute;
                 top: 15px;
-                right: 20px; 
-                z-index: 101; 
+                right: 20px;
+                z-index: 101;
             }
 
             .hamburger .bar {
                 display: block;
                 width: 25px;
                 height: 3px;
-                margin: 5px auto; 
+                margin: 5px auto;
                 background-color: white;
             }
 
-            .dark-mode-toggle { 
+            .dark-mode-toggle {
                 position: fixed;
                 top: 20px;
-                right: 20px; 
+                right: 20px;
                 z-index: 101;
                 cursor: pointer;
-                color: white; 
+                color: white;
             }
 
             .dark-mode .dark-mode-toggle {
-                color: black; 
+                color: black;
             }
         }
+
         .flash-message {
             padding: 10px;
             margin-bottom: 1rem;
@@ -238,12 +243,11 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-
     </style>
 </head>
 
 <body>
-     <div class="hamburger" onclick="toggleSidebar()">
+    <div class="hamburger" onclick="toggleSidebar()">
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
@@ -264,13 +268,13 @@
             <div class="welcome-message">Welcome, {{ name }} ({{ designation }})</div>
             <div id="current-datetime" class="datetime-display"></div>
         </nav>
-<div class="running-text">
+        <div class="running-text">
             <a href="#" onclick="showAllNews()">
                 <span>
                     {% if latest_news %}
-                        {{ latest_news.content }}
+                    {{ latest_news.content }}
                     {% else %}
-                        No news available.
+                    No news available.
                     {% endif %}
                 </span>
             </a>
@@ -281,14 +285,14 @@
                     <h5>Today's Classes</h5>
                     <p>
                         {% if todays_classes == "No classes today" %}
-                            {{ todays_classes }}
+                        {{ todays_classes }}
                         {% else %}
-                            <ul>
+                        <ul>
                             {% for class_ in todays_classes %}
-                                <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }})
-                                    <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
+                            <li>{{ class_.class }} - {{ class_.subject }} ({{ class_.section }})
+                                <br> {{ class_.start_time }} - {{ class_.end_time }}</li>
                             {% endfor %}
-                            </ul>
+                        </ul>
                         {% endif %}
                     </p>
                 </div>
@@ -297,75 +301,76 @@
                 <div class="card text-center p-4">
                     <h5>Current Class</h5>
                     {% if current_class %}
-    <p>{{ current_class.class }} - {{ current_class.subject }} ({{ current_class.section }})</p> 
-    <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
-{% else %}
-    <p>No class in session</p>
-{% endif %}
-
+                    <p>{{ current_class.class }} - {{ current_class.subject }} ({{ current_class.section }})</p>
+                    <p>Remaining Time: <span id="remaining-time">{{ remaining_time }}</span></p>
+                    {% else %}
+                    <p>No class in session</p>
+                    {% endif %}
                 </div>
             </div>
-            </div>
         </div>
-<div id="all-news-modal" class="modal">
+
+        <div id="all-news-modal" class="modal">
             <div class="modal-content">
                 <span class="close-btn" onclick="closeAllNewsModal()">&times;</span>
                 <h2>All News</h2>
                 <ul>
                     {% for news_item in all_news %}
-                        <li>
-                            <h3>{{ news_item.title }}</h3>
-                            <p>{{ news_item.content }}</p>
-                            <p>Created at: {{ news_item.created_at }}</p>
-                        </li>
+                    <li>
+                        <h3>{{ news_item.title }}</h3>
+                        <p>{{ news_item.content }}</p>
+                        <p>Created at: {{ news_item.created_at }}</p>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
+
         <footer>
-    <p>
-        Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span>
-    </p>
-    <div>
-        <a href="https://www.facebook.com/rofazhasanrafiu/" target="_blank" title="Facebook">
-            <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/md-rofaz-hasan-rafiu" target="_blank" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-        </a>
-    </div>
-</footer>
-    </div>
+            <p>
+                Designed with ❤️ by <span>Md. Rofaz Hasan Rafiu</span>
+            </p>
+            <div>
+                <a href="https://www.facebook.com/rofazhasanrafiu/" target="_blank" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/md-rofaz-hasan-rafiu" target="_blank" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </footer> 
+    </div> 
 
-  <script>
-    function updateDateTime() {
-      const dhakaTimezone = 'Asia/Dhaka';
-      const now = new Date();
-      const options = {
-        timeZone: dhakaTimezone,
-        hour12: true,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      };
-      const timeString = now.toLocaleString('en-US', options);
+    <script>
+        function updateDateTime() {
+            const dhakaTimezone = 'Asia/Dhaka';
+            const now = new Date();
+            const options = {
+                timeZone: dhakaTimezone,
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const timeString = now.toLocaleString('en-US', options);
 
-      const dateOptions = {
-        timeZone: dhakaTimezone,
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      };
-      const dateString = now.toLocaleString('en-US', dateOptions);
+            const dateOptions = {
+                timeZone: dhakaTimezone,
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            };
+            const dateString = now.toLocaleString('en-US', dateOptions);
 
-      document.getElementById('current-datetime').innerHTML = `
-          <div>Date: ${dateString}</div>
-          <div>Time: ${timeString}</div>
-      `;
-    }
+            document.getElementById('current-datetime').innerHTML = `
+                <div>Date: ${dateString}</div>
+                <div>Time: ${timeString}</div>
+            `;
+        }
 
-    setInterval(updateDateTime, 1000);
-    function updateRemainingTime() {
+        setInterval(updateDateTime, 1000);
+
+        function updateRemainingTime() {
             var remainingTimeElement = document.getElementById("remaining-time");
             if (remainingTimeElement) {
                 var timeParts = remainingTimeElement.textContent.split(":");
@@ -393,26 +398,27 @@
                 }
 
                 var newTimeString = hours.toString().padStart(2, '0') + ":" +
-                                    minutes.toString().padStart(2, '0') + ":" +
-                                    seconds.toString().padStart(2, '0');
+                    minutes.toString().padStart(2, '0') + ":" +
+                    seconds.toString().padStart(2, '0');
                 remainingTimeElement.textContent = newTimeString;
             }
         }
 
         // Update remaining time every second
         setInterval(updateRemainingTime, 1000);
-    function showAllNews() {
+
+        function showAllNews() {
             document.getElementById("all-news-modal").style.display = "block";
         }
 
         function closeAllNewsModal() {
             document.getElementById("all-news-modal").style.display = "none";
         }
-      function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('show'); 
-}
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('show');
+        }
     </script>
 </body>
-
 </html>
