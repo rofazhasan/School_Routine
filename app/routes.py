@@ -357,11 +357,9 @@ def user_dashboard():
     # Get today's schedule for the logged-in teacher
     todays_schedule = TeacherSchedule.query.filter_by(teacher_id=user.user_id).all()
    
-     
-
     # Filter for today's classes based on Dhaka time
     todays_classes = []
-    current_class = None
+    current_class = None  # Initialize current_class here
     remaining_time = None
     for schedule in todays_schedule:
         start_time = datetime.combine(now_dhaka.date(), schedule.start_time).replace(tzinfo=dhaka_timezone)
@@ -369,21 +367,21 @@ def user_dashboard():
 
         # Check if the class is TODAY and within the current time
         if schedule.day_of_week == now_dhaka.strftime('%A'): 
-        	class_info = {
-            	'class': Class.query.get(schedule.class_id).class_name,
-            	'subject': Subject.query.get(schedule.subject_id).subject_name,
-            	'section': Class.query.get(schedule.class_id).section,
-            	'start_time': schedule.start_time.strftime('%I:%M %p'),
-            	'end_time': schedule.end_time.strftime('%I:%M %p')
-        		}
-        
-        	todays_classes.append(class_info)
+            class_info = {
+                'class': Class.query.get(schedule.class_id).class_name,
+                'subject': Subject.query.get(schedule.subject_id).subject_name,
+                'section': Class.query.get(schedule.class_id).section,
+                'start_time': schedule.start_time.strftime('%I:%M %p'),
+                'end_time': schedule.end_time.strftime('%I:%M %p')
+            }
 
-        # Check if this is the current class
-        if start_time <= now_dhaka <= end_time:
-            current_class = class_info
-            remaining_time = end_time - now_dhaka
-            remaining_time = str(timedelta(seconds=remaining_time.seconds))
+            todays_classes.append(class_info)
+
+            # Check if this is the current class (now inside the if block)
+            if start_time <= now_dhaka <= end_time:
+                current_class = class_info
+                remaining_time = end_time - now_dhaka
+                remaining_time = str(timedelta(seconds=remaining_time.seconds))
 
     if not todays_classes:
         todays_classes = "No classes today"
