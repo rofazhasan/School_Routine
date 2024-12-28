@@ -18,6 +18,11 @@ def index():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if session.get('logged_in'):
+        if session['user_role'] == 'Admin':
+            return redirect(url_for('app.admin_dashboard'))
+        else:
+            return redirect(url_for('app.user_dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         phone = form.phone_number.data
