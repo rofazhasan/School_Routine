@@ -243,43 +243,23 @@ def create_routine():
         return redirect(url_for('app.create_routine'))  # Redirect to the same page after successful creation
 
     return render_template('create_routine.html', form=form)
-@app.route('/admin/update_routine/<int:schedule_id>', methods=['GET', 'POST'])
-def update_routine(schedule_id):
+@app.route('/admin/delete_routine/<int:schedule_id>', methods=['POST'])  # Only POST is needed
+def delete_routine(schedule_id):
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
         return redirect(url_for('app.login'))
-    schedule_id  = int(schedule_id)
-    schedule = TeacherSchedule.query.get_or_404(schedule_id)
-    if not schedule:
-        flash('Schedule not found!', 'danger')
-        return redirect(url_for('app.show_routine'))  # Or wherever you want to redirect
 
-    form = TeacherScheduleForm(obj=schedule)
+    schedule = TeacherSchedule.query.get_or_404(schedule_id) 
 
-    form.teacher.choices = [(teacher.user_id, teacher.name) for teacher in User.query.filter(User.role.in_(['Assistant Teacher', 'Admin', 'Assistant Head Teacher'])).all()]
-    form.class_.choices = [(class_.class_id, class_.class_name) for class_ in Class.query.all()]
-    form.subject.choices = [(subject.subject_id, subject.subject_name) for subject in Subject.query.all()]
+    try:
+        db.session.delete(schedule) 
+        db.session.commit()
+        flash('Schedule deleted successfully!', 'success')
+        return redirect(url_for('app.show_routine'))
 
-    if form.validate_on_submit():
-        print("Form submitted and validated!")
-        try:
-            # --- Update the schedule object ---
-            schedule.teacher_id = form.teacher.data
-            schedule.class_id = form.class_.data
-            schedule.subject_id = form.subject.data
-            schedule.start_time = form.start_time.data
-            schedule.end_time = form.end_time.data 
-
-            db.session.commit()
-            flash('Schedule updated successfully!', 'success')
-            return redirect(url_for('app.show_routine'))
-
-        except Exception as e:
-            db.session.rollback()
-            print(f"Error updating schedule: {e}")  # Print the exception
-            flash(f'Error updating schedule: {str(e)}', 'danger')
-
-    return render_template('update_routine.html', form=form, schedule=schedule)
-
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting schedule: {e}")
+        flash(f'Error deleting schedule: {str(e)}', 'danger')
 @app.route('/admin/add_user', methods=["GET", "POST"])
 def add_user():
     if not (session.get('logged_in') and session.get('user_role') == 'Admin'):
